@@ -1,0 +1,79 @@
+[gd_scene load_steps=8 format=3 uid="uid://nmyaj473y433"]
+
+[ext_resource type="Script" path="res://Player/attack/tornado.gd" id="1_lxvn6"]
+[ext_resource type="Texture2D" uid="uid://de4ctqs45s1ns" path="res://Weapons/Purple Tornado.png" id="2_3kwru"]
+[ext_resource type="AudioStream" uid="uid://bgt3wqfvm5g5e" path="res://Audio/SoundEffect/tornado.ogg" id="3_biqlk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uee1c"]
+size = Vector2(26, 24)
+
+[sub_resource type="Animation" id="Animation_seofo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_6ibvj"]
+resource_name = "spin"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 4, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_64wrb"]
+_data = {
+"RESET": SubResource("Animation_seofo"),
+"spin": SubResource("Animation_6ibvj")
+}
+
+[node name="Tornado" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.1, 0.1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_lxvn6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3kwru")
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_uee1c")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CollisionShape2D")
+libraries = {
+"": SubResource("AnimationLibrary_64wrb")
+}
+autoplay = "spin"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="snd_attack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_biqlk")
+volume_db = -9.541
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

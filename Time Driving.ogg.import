@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c6vx3n8v84jnh"
+path="res://.godot/imported/Time Driving.ogg-2f0c179b2d2d872f0d8af352aa5aaf1e.oggvorbisstr"
+
+[deps]
+
+source_file="res://Time Driving.ogg"
+dest_files=["res://.godot/imported/Time Driving.ogg-2f0c179b2d2d872f0d8af352aa5aaf1e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

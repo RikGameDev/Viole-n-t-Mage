@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://cijwk7ef87lks"]
+
+[ext_resource type="Script" path="res://Player/attack/shadow_bolt.gd" id="1_m0ju0"]
+[ext_resource type="Texture2D" uid="uid://b3vqesq301u77" path="res://Weapons/Shadow Bolt.png" id="2_ls1cu"]
+[ext_resource type="AudioStream" uid="uid://5172pq6xqi7" path="res://Fireball 2.ogg" id="3_fwq7s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1s0qy"]
+size = Vector2(24.0416, 9.8995)
+
+[sub_resource type="Animation" id="Animation_enr34"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_td183"]
+resource_name = "Spellcast"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ky7ww"]
+_data = {
+"RESET": SubResource("Animation_enr34"),
+"Spellcast": SubResource("Animation_td183")
+}
+
+[node name="ShadowBolt" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.1, 0.1)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_m0ju0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -2.35619
+skew = 0.0174533
+texture = ExtResource("2_ls1cu")
+hframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 1)
+rotation = -2.35619
+shape = SubResource("RectangleShape2D_1s0qy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ky7ww")
+}
+autoplay = "Spellcast"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="snd_play" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fwq7s")
+volume_db = -17.651
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

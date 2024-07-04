@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://r4fpaxr0ynur"]
+
+[ext_resource type="Script" path="res://Player/attack/javelin.gd" id="1_d06up"]
+[ext_resource type="Texture2D" uid="uid://cfx1vrlpm7fya" path="res://Weapons/Souls Edge Eye Closed.png" id="2_ernct"]
+[ext_resource type="AudioStream" uid="uid://85wbuybt3fj8" path="res://Audio/SoundEffect/woosh.wav" id="3_6xqfl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_usgso"]
+size = Vector2(30.4056, 108.187)
+
+[node name="Javelin" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.5, 0.5)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_d06up")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+process_priority = 1
+rotation = -1.5708
+texture = ExtResource("2_ernct")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 6)
+rotation = -0.785398
+shape = SubResource("RectangleShape2D_usgso")
+disabled = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="ChangeDirection" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="ResetPosTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.0
+autostart = true
+
+[node name="snd_attack" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_6xqfl")
+volume_db = -7.358
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
+[connection signal="timeout" from="ResetPosTimer" to="." method="_on_reset_pos_timer_timeout"]

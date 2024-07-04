@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://vp30pr6nljxh"]
+
+[ext_resource type="Texture2D" uid="uid://cyq4emxmpdueb" path="res://Textures/GUI/EmptyItem.png" id="1_ub4m8"]
+[ext_resource type="Texture2D" uid="uid://dgl3v2lma0k3s" path="res://Weapons/Shadow Bolt icon.png" id="2_s20qc"]
+[ext_resource type="Script" path="res://Player/GUI/item_container.gd" id="2_txm0x"]
+
+[node name="ItemContainer" type="TextureRect"]
+offset_right = 33.0
+offset_bottom = 33.0
+texture = ExtResource("1_ub4m8")
+script = ExtResource("2_txm0x")
+
+[node name="ItemTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 35.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_s20qc")

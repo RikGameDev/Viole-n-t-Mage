@@ -1,0 +1,105 @@
+[gd_scene load_steps=12 format=3 uid="uid://p1ny3um7a1dd"]
+
+[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_yj3tv"]
+[ext_resource type="Texture2D" uid="uid://8hb8yv8jde8u" path="res://Textures/Enemy/cyclops.png" id="2_dxhxf"]
+[ext_resource type="PackedScene" uid="uid://bujghkvsgfil8" path="res://Utility/hurt_box.tscn" id="2_p2adc"]
+[ext_resource type="PackedScene" uid="uid://cnj2iubk51ndx" path="res://Utility/hit_box.tscn" id="3_p5ux3"]
+[ext_resource type="AudioStream" uid="uid://ctanh7vc4nqge" path="res://08_Bite_04.wav" id="4_h5hp5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5too"]
+radius = 9.0
+height = 34.0
+
+[sub_resource type="Animation" id="Animation_hhg0i"]
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_780l5"]
+resource_name = "walk"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lctub"]
+_data = {
+"RESET": SubResource("Animation_hhg0i"),
+"walk": SubResource("Animation_780l5")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_byaw7"]
+size = Vector2(20, 26.6667)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vtmu4"]
+size = Vector2(36.875, 39.7917)
+
+[node name="enemy_cyclops" type="CharacterBody2D"]
+scale = Vector2(1.3, 1.3)
+collision_layer = 5
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_yj3tv")
+movement_speed = 16.0
+hp = 100
+knockback_recovery = 10.0
+experience = 5
+enemy_damage = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dxhxf")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_e5too")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lctub")
+}
+autoplay = "walk"
+
+[node name="HurtBox" parent="." instance=ExtResource("2_p2adc")]
+collision_mask = 4
+HurtBoxType = 1
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(0, 4.96705e-07)
+shape = SubResource("RectangleShape2D_byaw7")
+
+[node name="HitBox" parent="." instance=ExtResource("3_p5ux3")]
+collision_layer = 2
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(-0.104167, 0.104168)
+shape = SubResource("RectangleShape2D_vtmu4")
+
+[node name="snd_hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_h5hp5")
+volume_db = -15.208
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+
+[editable path="HurtBox"]
+[editable path="HitBox"]
